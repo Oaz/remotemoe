@@ -40,17 +40,8 @@ func DefaultConfig() (*ssh.ServerConfig, error) {
 				// "chacha20-poly1305@openssh.com",
 			},
 		},
-		MaxAuthTries: 1,
-		PublicKeyCallback: func(c ssh.ConnMetadata, pubKey ssh.PublicKey) (*ssh.Permissions, error) {
-			return &ssh.Permissions{
-				// Record the public key used for authentication.
-				Extensions: map[string]string{
-					"pubkey-fp":  ssh.FingerprintSHA256(pubKey),
-					"pubkey-ish": fingerprintIsh(pubKey),
-					"pubkey":     string(ssh.MarshalAuthorizedKey(pubKey)),
-				},
-			}, nil
-		},
+		MaxAuthTries:      1,
+		PublicKeyCallback: publicKeyAuthentication(),
 		// We will use the keyboard interactive auth method as a way of telling the user that
 		// he needs to create a public key and use that instead - we should not get here if the user already has
 		// a working key and presented that in the first place
