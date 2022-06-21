@@ -40,8 +40,8 @@ func DefaultConfig() (*ssh.ServerConfig, error) {
 				// "chacha20-poly1305@openssh.com",
 			},
 		},
-		MaxAuthTries:      1,
-		PublicKeyCallback: publicKeyAuthentication(),
+		MaxAuthTries:      2,
+		PublicKeyCallback: publicKeyAuthentication(os.Getenv("AUTHORIZED_KEYS_FILE")),
 		// We will use the keyboard interactive auth method as a way of telling the user that
 		// he needs to create a public key and use that instead - we should not get here if the user already has
 		// a working key and presented that in the first place
